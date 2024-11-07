@@ -6,10 +6,13 @@
 
 import { http_api_port } from '@common/constants'
 import express from 'express'
+import bodyParser from 'body-parser'
 import { Server } from 'http'
 import api_router from './api/index'
 
 const app = express()
+
+app.use(bodyParser.json())
 
 app.use((req, res, next) => {
   console.log(
@@ -20,6 +23,13 @@ app.use((req, res, next) => {
   )
   next()
 })
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Private-Network', 'true')
+  res.header('Access-Control-Allow-Headers', '*')
+  next()
+});
 
 app.get('/', (req, res) => {
   res.send('Hello SwitchHosts!')
